@@ -26,7 +26,7 @@ def get_game_log(sessionid, gameid):
     gamelog_headers["Cookie"] = f"paifuSessionId={sessionid}"
     response = requests.get(game_base_url + gameid, headers=gamelog_headers)
     if response.status_code != 200:
-        raise Exception(f"Status code is not 200: {response.status_code}, {response.text}")
+        raise Exception(f"Error: Status code is not 200: {response.status_code}, {response.text}")
     log_json = None
     game_log = re.search(r"UMP_PLAYER.init\([^']+'([^']+)'.+", response.text)
     if game_log is not None:
@@ -46,7 +46,7 @@ def get_gameid(L, S, D, A):
 def retrieve_game_log(sessionid, outdir, gameid):
     log_json = get_game_log(sessionid, gameid)
     if log_json is None:
-        raise Exception("Could not find valid log.")
+        raise Exception("Error: Could not find valid log.")
     save_game_log(f"{outdir}/{gameid}.json", log_json)
 
 
