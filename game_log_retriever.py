@@ -46,7 +46,7 @@ def get_gameid(L, S, D, A):
 def retrieve_game_log(sessionid, outdir, gameid):
     log_json = get_game_log(sessionid, gameid)
     if log_json is None:
-        raise Exception("Failed to retrieve game log.")
+        raise Exception("Could not find valid log.")
     save_game_log(f"{outdir}/{gameid}.json", log_json)
 
 
@@ -58,8 +58,8 @@ def wait_random(min, max):
 
 def main(sessionid, outdir):
     L = 1  # 現状固定
-    for S in range(16, 17):  # シーズン
-        D = 69  # 何日めか
+    for S in range(1, 16):  # シーズン
+        D = 1  # 何日めか
         A = 1  # 何試合目か
         while True:
             try:
