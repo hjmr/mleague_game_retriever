@@ -37,18 +37,15 @@ def signin(session, auth_info):
     return json.loads(response.text)
 
 
-def get_game_log(session, gameid, auth_info):
+def get_game_log(session, gameid, token):
     gamelog_headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-        "Content-Type": "application/x-www-form-urlencoded",
         "Origin": "https://m-league.jp",
         "Referer": "https://m-league.jp/",
     }
-    md5pass = hashlib.md5(auth_info["password"].encode()).hexdigest()
-    passstr = f"password={md5pass}"
-    print(passstr)
-    response = requests.post(game_base_url + gameid, headers=gamelog_headers, data=passstr)
+    gamelog_headers["X-Authorization"] = token
+    response = requests.get(game_base_url + gameid, headers=gamelog_headers)
     assert response.status_code == 200, f"{response.status_code} {response.text}"
     sessionId = response.cookies.get("Set-Cookie")
     log_json = None
@@ -67,5 +64,5 @@ if __name__ == "__main__":
     print(response)
 
     gameid = "L001_S016_0097_01A"
-    game_log, sessionId = get_game_log(session, gameid, auth_info)
+    game_log, sessionId = get_game_log(session, gameid, response["token"])
     print(sessionId)
