@@ -12,6 +12,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", "--sessionid", type=str, help="paifu session ID")
     parser.add_argument("-o", "--outdir", type=str, help="output directory")
+    parser.add_argument("--game_id", type=str, help="game ID")
     return parser.parse_args()
 
 
@@ -82,4 +83,7 @@ def main(sessionid, outdir):
 
 if __name__ == "__main__":
     args = parse_args()
-    main(args.sessionid, args.outdir)
+    if args.game_id is not None:
+        retrieve_game_log(args.sessionid, args.outdir, args.game_id)
+    else:
+        main(args.sessionid, args.outdir)
